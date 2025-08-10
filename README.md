@@ -1,98 +1,107 @@
-# Token Bucket Rate Limiter in Go
+# 🚦 Token Bucket Rate Limiter in Go
 
-This is a high-concurrency **rate limiter** implemented in Go using the **Token Bucket design pattern**. It demonstrates how to throttle requests effectively and safely using goroutines, mutexes, and channels.
+This project is a **high-concurrency rate limiter** implemented in Go using the **Token Bucket design pattern**. It demonstrates safe request throttling with goroutines, mutexes, and channels.
 
 ---
 
 ## 🧠 Theory
 
-**Rate Limiting** is the practice of restricting the rate at which an operation can be performed (e.g., API calls). It protects systems from abuse, ensures fair usage, and prevents overload.
+**Rate Limiting** controls how often an action can occur in a given timeframe, helping protect APIs from abuse and overload.
 
 **Token Bucket Pattern**:
 
-- A bucket holds a number of tokens.
-- Tokens are added at a fixed rate.
-- Each request consumes a token.
+- A bucket holds tokens.
+- Tokens refill at a fixed rate.
+- Each request consumes one token.
 - If no tokens are available, the request is denied or delayed.
 
 ---
 
-## 📁 Project Structure
+## 📁 Current Project Structure
 
 ```
-rate-limiter-token-bucket/
+.
+├── cmd
+│   └── main.go
 ├── go.mod
-├── main.go                  # Test file with concurrency
-└── limiter/
-    └── token_bucket.go      # Token Bucket implementation
+├── internal
+│   └── middleware
+│       └── http.go
+├── LICENSE
+├── Makefile
+├── pkg
+│   └── limiter
+│       ├── leaky_bucket.go
+│       ├── limiter.go
+│       └── token_bucket.go
+├── README.md
+└── tests
+    ├── benchmark_test.go
+    ├── concurrency_test.go
+    └── limiter_test.go
 ```
+
+---
+
+## ⚡ Current Features
+
+- **Token Bucket** and **Leaky Bucket** implementations
+- Thread-safe with `sync.Mutex`
+- Middleware-ready for HTTP
+- Unit tests and benchmarks
+- Modular Go project structure
 
 ---
 
 ## 🛠️ Setup
 
 ```bash
-# Clone the repo
-git clone https://github.com/rohankarn35/Rate-Limiter-Token-Bucket.git
-cd rate-limiter-token-bucket
-
-# Initialize Go module
 go mod tidy
-
-# Run the test
-go run main.go
+go run ./cmd/main.go
 ```
 
 ---
 
-## 🔍 Token Bucket Configuration (in main.go)
+## 🔮 Upcoming Advancements (Version 2)
 
-```go
-capacity := 10                  // Max tokens
-refillRate := 5                 // Tokens added each interval
-refillInterval := time.Second   // Interval for refilling tokens
+We are evolving this into a **production-grade** rate limiter:
+
+- **Per-IP** and **Per-API key** limiting
+- Multiple algorithms: Token Bucket, Leaky Bucket, Sliding Window
+- In-memory + Redis-backed storage for distributed deployments
+- HTTP & gRPC middleware
+- Configurable tiers per route or plan
+- Prometheus metrics for monitoring
+- Dockerized for easy deployment
+- CI/CD with GitHub Actions
+
+**Future Structure:**
+
 ```
-
-You can tune these values to test different traffic conditions.
-
----
-
-## 🧪 Sample Behavior
-
-- Sends 50 concurrent requests.
-- Spreads them over time with `time.Sleep`.
-- Some requests are allowed (✅), others are rate limited (❌), depending on token availability.
-
----
-
-## 🔐 Core Features
-
-- Thread-safe token handling with `sync.Mutex`
-- Background goroutine for token refill using `time.Ticker`
-- Graceful shutdown of refill loop via `chan struct{}`
-- Clean and modular structure
-
----
-
-## 🚀 Future Enhancements
-
-- Per-client rate limiting
-- Middleware integration (HTTP/GRPC)
-- Unit tests and benchmarking
-- Redis-backed shared limiter (for distributed systems)
+.
+├── cmd/server/
+├── config/
+├── deployments/
+├── internal/api/
+├── internal/server/
+├── pkg/limiter/
+├── pkg/storage/
+├── test/
+├── .github/workflows/
+├── go.mod
+├── LICENSE
+├── Makefile
+└── README.md
+```
 
 ---
 
 ## 📄 License
 
-Apache License
+Apache License 2.0
 
 ---
 
-## 🤝 Author
+## 👨‍💻 Author
 
-**Rohan Karn**
-
----
-
-Happy hacking! 🚀
+**Rohan Karn** — Backend & Go Developer
